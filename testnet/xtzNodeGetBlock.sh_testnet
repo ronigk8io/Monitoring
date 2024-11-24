@@ -1,0 +1,12 @@
+#!/bin/bash
+[[ ! $1 ]] && echo "Usage: "$0" <node_ip like 3.13.55.77>" &&	exit
+
+json=`timeout 4 curl  "$1/chains/main/blocks/head/header/shell" 2>/dev/null`
+result=`echo $json | jq '.level'`
+
+if [ ! -z "${result}"  ] && [ "${result}" != "null" ]
+then
+    echo $result
+else
+    echo 0
+fi

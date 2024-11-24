@@ -1,0 +1,15 @@
+MONITORING_DIR="/home/ubuntu/Monitoring"
+TOUCHED_FILES_DIR="$MONITORING_DIR"/"monitoringTouchedFiles"
+
+(crontab -l ; echo "
+# Monitor nodes
+*/10 * * * *  cd $MONITORING_DIR && echo "---" $(date) | tee -a ~/logs/MonitorManager.log && python2.7 MonitorManager.py | tee -a ~/logs/MonitorManager.log 
+# Monitor Website
+#*/10 * * * *  cd $MONITORING_DIR && cd gk8WebsiteMonitoring && echo "---" $(date) | tee -a ~/logs/gk8WebsiteMonitoring.log && bash gk8WebsiteMonitoring.sh 2>> ~/logs/gk8WebsiteMonitoring.log
+# Update Grafana customer view dashboard
+*/3 * * * *  cd $MONITORING_DIR/grafana && echo "---" $(date) | tee -a ~/logs/write_all.log && python3 write_all.py | tee -a ~/logs/write_all.log 
+# Update Envs and nodes mapping file
+*/60 * * * *  cd $MONITORING_DIR && echo "---" $(date) | tee -a ~/logs/update_env_node_mapping.log && python3 update_env_node_mapping.py | tee -a ~/logs/update_env_node_mapping.log 
+") | crontab -
+
+

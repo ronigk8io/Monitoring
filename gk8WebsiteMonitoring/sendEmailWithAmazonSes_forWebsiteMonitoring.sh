@@ -1,0 +1,9 @@
+#!/bin/bash
+
+aws ses send-email \
+    --from website_monitor_no_reply@gk8.io \
+    --to roni@gk8.io shahar@gk8.io mark@gk8.io adam@gk8.io \
+    --text "GK8 Website Monitoring: This is for those who cannot read HTML." \
+    --text "$2" \
+    --html "<h1>GK8 Website Monitoring: Please Check Your Website!</h1><p>$2</p>" \
+    --subject "GK8.IO website health check did not pass! $1"

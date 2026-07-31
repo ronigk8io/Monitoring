@@ -22,6 +22,16 @@ Tests:
   - while testing: use the nodes-monitoring-tests slack channel
   - in production: use the healthcenter slack channel
 
+BlockJinn checks (app-level -- separate from node MonitorManager; live under `blockjinn/`):
+- `blockjinn/check_blockjinn_scanners.py` -- all mainnet `/v1/health` milestone ages
+- `blockjinn/check_polymesh_faces.py` -- Polymesh Hot-like + node face probes
+- Safe test: `python3 blockjinn/check_blockjinn_scanners.py --dry-run`
+- Test Slack: `python3 blockjinn/check_blockjinn_scanners.py --channel-test --max-age-sec 1 --chains ethereum --force-notify`
+- Prod cron (Monitoring host `ubuntu@3.222.94.21`, log `~/logs/blockjinn_scanners.log`):
+  `*/5 * * * * cd /home/ubuntu/Monitoring && /usr/bin/python3 blockjinn/check_blockjinn_scanners.py >> ~/logs/blockjinn_scanners.log 2>&1`
+- Default Slack = `#healthcenter` (`C04LPKAGV6U`). Silent when all OK; re-alert dedup 60 min.
+- Thresholds: 30 min default; bitcoin/bitcoincash 60 min.
+
 ====================
 
 Work status and info from 2024-05

@@ -10,6 +10,8 @@ TOUCHED_FILES_DIR="$MONITORING_DIR"/"monitoringTouchedFiles"
 */3 * * * *  cd $MONITORING_DIR/grafana && echo "---" $(date) | tee -a ~/logs/write_all.log && python3 write_all.py | tee -a ~/logs/write_all.log 
 # Update Envs and nodes mapping file
 */60 * * * *  cd $MONITORING_DIR && echo "---" $(date) | tee -a ~/logs/update_env_node_mapping.log && python3 update_env_node_mapping.py | tee -a ~/logs/update_env_node_mapping.log 
+# BlockJinn scanners (app milestone age) -- Slack #healthcenter on fail only
+*/5 * * * *  cd $MONITORING_DIR && /usr/bin/python3 blockjinn/check_blockjinn_scanners.py >> ~/logs/blockjinn_scanners.log 2>&1
 ") | crontab -
 
 

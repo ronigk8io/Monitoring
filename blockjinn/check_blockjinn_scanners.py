@@ -7,12 +7,12 @@ alert Slack if last_milestone age exceeds the chain threshold.
 Learned from: MonitorManager.py (node tip lag) + check_polymesh_faces.py (BJ health).
 
 Usage (Monitoring Server):
-  python3 check_blockjinn_scanners.py --dry-run
-  python3 check_blockjinn_scanners.py --channel-test
-  python3 check_blockjinn_scanners.py
+  cd /home/ubuntu/Monitoring && python3 blockjinn/check_blockjinn_scanners.py --dry-run
+  python3 blockjinn/check_blockjinn_scanners.py --channel-test
+  python3 blockjinn/check_blockjinn_scanners.py
 
 Cron example:
-  */5 * * * * cd /home/ubuntu/Monitoring && python3 check_blockjinn_scanners.py >> ~/logs/blockjinn_scanners.log 2>&1
+  */5 * * * * cd /home/ubuntu/Monitoring && /usr/bin/python3 blockjinn/check_blockjinn_scanners.py >> ~/logs/blockjinn_scanners.log 2>&1
 
 Safety:
   - Default Slack is #healthcenter. Use --channel-test or --dry-run first.
@@ -63,12 +63,14 @@ CHAINS = [
     "tron",
 ]
 
+# Repo root = parent of this package dir (Tokens/ lives there)
+REPO_ROOT = Path(__file__).resolve().parent.parent
 SLACK_HEALTHCENTER = "C04LPKAGV6U"
 SLACK_TEST = "C06V5E6PEFJ"  # nodes-monitoring-tests
 SLACK_TOKEN_PATH = os.environ.get(
-    "SLACK_TOKEN_PATH", "Tokens/slack_token_for_nodes_monitoring_app"
+    "SLACK_TOKEN_PATH",
+    str(REPO_ROOT / "Tokens" / "slack_token_for_nodes_monitoring_app"),
 )
-# Note: repo has a file named latest_check (not a dir) -- keep state beside it.
 STATE_PATH = Path(
     os.environ.get(
         "BJ_SCANNER_STATE",

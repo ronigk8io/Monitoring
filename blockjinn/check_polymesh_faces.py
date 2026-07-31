@@ -8,9 +8,9 @@ Default notify: Slack #healthcenter (same token as MonitorManager).
 CW SNS email stays on the host cron metrics -- this script is the easy Slack path.
 
 Usage (Monitoring Server):
-  python3 check_polymesh_faces.py
+  python3 blockjinn/check_polymesh_faces.py
 Cron example:
-  */5 * * * * cd /home/ubuntu/Monitoring && python3 check_polymesh_faces.py >> logs/polymesh_faces.log 2>&1
+  */5 * * * * cd /home/ubuntu/Monitoring && python3 blockjinn/check_polymesh_faces.py >> ~/logs/polymesh_faces.log 2>&1
 """
 from __future__ import annotations
 
@@ -18,6 +18,9 @@ import json
 import os
 import time
 import urllib.request
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 BJ_HEALTH_URL = os.environ.get(
     "BJ_HEALTH_URL", "https://blockjinn.gk8.network/polymesh/v1/health"
@@ -32,7 +35,8 @@ SIDECAR_HEAD = os.environ.get(
 MAX_AGE_SEC = int(os.environ.get("MAX_AGE_SEC", "300"))
 SLACK_CHANNEL = os.environ.get("SLACK_CHANNEL", "C04LPKAGV6U")  # healthcenter
 SLACK_TOKEN_PATH = os.environ.get(
-    "SLACK_TOKEN_PATH", "Tokens/slack_token_for_nodes_monitoring_app"
+    "SLACK_TOKEN_PATH",
+    str(REPO_ROOT / "Tokens" / "slack_token_for_nodes_monitoring_app"),
 )
 
 

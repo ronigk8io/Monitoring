@@ -1,3 +1,4 @@
 Tokens/*
-blockjinn_scanners_state.json
+blockjinn/blockjinn_scanners_state.json
 __pycache__/
+blockjinn/__pycache__/
